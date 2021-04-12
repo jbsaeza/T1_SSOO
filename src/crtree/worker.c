@@ -26,3 +26,10 @@ indica que el proceso padre debe escribir las estadisticas antes de que el hijo 
 //         ;
 //     return t - s;
 // }
+
+#include <stdio.h>
+
+void worker(){
+    puts("A mimir");
+    puts("Worker ejecutando");
+}
