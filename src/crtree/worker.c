@@ -28,8 +28,22 @@ indica que el proceso padre debe escribir las estadisticas antes de que el hijo 
 // }
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+
 
 void worker(){
-    puts("A mimir");
+    void on_sigabrt (int signum)
+    {
+        puts("WORKER ABORTED");
+        // En vez de esto deberia ser un exit con la data pal archivo
+        signal(SIGABRT, SIG_DFL);
+        abort();
+    }
+    signal(SIGABRT, &on_sigabrt);
+
+    sleep(5);
     puts("Worker ejecutando");
+    
 }
