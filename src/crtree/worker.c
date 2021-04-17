@@ -20,16 +20,13 @@ char dest[100] = "";
 void handle_sigint()
 {
   signal(SIGINT, handle_sigint);
-  printf("\n--Señal SIGINT recibida--\n");
 }
 
 void handle_sigabort()
 {
   signal(SIGABRT, handle_sigabort);
-  tiempo_final = clock();
-  printf("\n--Señal SIGABRT recibida--\n");
   interrumped = 1;
-  final_output_format();
+  kill(child_pid, SIGABRT);
 }
 
 void output_format(char* dest, int n, char** args){
@@ -72,12 +69,8 @@ void worker(char** process, int number)
     signal(SIGINT,handle_sigint);
     signal(SIGABRT, handle_sigabort);
     waitpid(child_pid,&status,0);
-    if (!interrumped)
-    {
-      tiempo_final = clock();
-      final_output_format();
-      
-    }
+    tiempo_final = clock();
+    final_output_format();
     free(buffer);
     free(args);
   } 

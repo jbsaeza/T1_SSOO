@@ -4,17 +4,6 @@
 #include "../file_manager/manager.h"
 #include "worker.h"
 
-/* Interrupt the process */ 
-#define SIGINT  2 
-
-/* Abort. */
-#define SIGABRT 6
-
-void handle_signal(int sig)
-{
-  printf("Caught signal %d\n", sig);
-}
-
 int main(int argc, char **argv)
 {
   InputFile* input_file = read_file(argv[1]);
