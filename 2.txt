@@ -1,2 +1,1 @@
-./sum,args...,315.000000,21967,interrumped or not
-./sum,args...,307.000000,21967,interrumped or not
+./sum,2,5,341.000000,0,0
