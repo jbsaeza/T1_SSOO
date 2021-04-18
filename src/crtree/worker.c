@@ -43,7 +43,7 @@ void worker(){
     }
     signal(SIGABRT, &on_sigabrt);
 
-    sleep(5);
-    puts("Worker ejecutando");
+    // sleep(5);
+    puts("Worker terminado");
     
 }
