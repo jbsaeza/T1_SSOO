@@ -23,13 +23,13 @@ void generate_output()
   ssize_t read;
   char* line;
   char* buffer = malloc(100*sizeof(char));
-  sprintf(buffer,"./i.txt",manager_number);
+  sprintf(buffer,"./%i.txt",manager_number);
   FILE* file = fopen(buffer,"w");
   for (int i = 0; i < size; i++)
   {
     line = NULL;
     len = 0;
-    sprintf(buffer,"./i.txt",children_index[i]);
+    sprintf(buffer,"./%i.txt",children_index[i]);
     child_file = fopen(buffer,"r");
     while((read = getline(&line, &len, child_file)) != -1)
     {
@@ -121,7 +121,6 @@ void run_manager(InputFile* input_file, char* time_out, char* n_lines, char** li
         
     }
     if (child != 0){
-        puts("------------------ABORTING------------------");
         if(root){
             printf("Soy el root: %d\n", child);
         }
@@ -131,11 +130,12 @@ void run_manager(InputFile* input_file, char* time_out, char* n_lines, char** li
         while (time(NULL)-start < atoi(time_out)){
             for (int i = 0; i < atoi(n_lines); i++)
             {
-                printf("Esperando a Hijo: %d\n", children[i]);
-                printf("Esperando a Hijo de indice: %c\n", children_index[i]);
+                // printf("Esperando a Hijo: %d\n", children[i]);
+                // printf("Esperando a Hijo de indice: %c\n", children_index[i]);
                 waitpid(children[i], &status, WNOHANG);
             }
         }
+        puts("------------------ABORTING------------------");
         abort();
         // sleep(20);
     }
