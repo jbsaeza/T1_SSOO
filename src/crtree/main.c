@@ -5,6 +5,7 @@
 
 #include "../file_manager/manager.h"
 #include "manager.h"
+#include "worker.h"
 
 int main(int argc, char **argv)
 {
@@ -14,6 +15,7 @@ int main(int argc, char **argv)
   {
     case 'W':
       printf("Ejecutando Worker: %s\n", input_file -> lines[process][1]);
+      worker(input_file -> lines[process], process);
       break;
 
     case 'M':

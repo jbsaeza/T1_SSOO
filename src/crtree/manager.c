@@ -107,7 +107,7 @@ void run_manager(InputFile* input_file, char* time_out, char* n_lines, char** li
         if(child == 0){
             const int w = atoi(line[i+3]);
             if(*input_file -> lines[w][0] == 'W'){
-                run_worker(input_file -> lines[w][1], input_file -> lines[w][2], input_file -> lines[w]);
+                worker(input_file -> lines[w], w);
             }
             else{
                 run_manager(input_file, input_file -> lines[w][1], input_file -> lines[w][2], input_file -> lines[w], false, w);
@@ -141,8 +141,3 @@ void run_manager(InputFile* input_file, char* time_out, char* n_lines, char** li
     }
         
 }
-
-void run_worker(char *file, char* n_args, char** args){
-    worker();
-};
-
