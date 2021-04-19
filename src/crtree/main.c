@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 
     case 'M':
       printf("Ejecutando Manager\n");
-      run_manager(input_file, input_file -> lines[process][1], input_file -> lines[process][2], input_file -> lines[process], false);
+      run_manager(input_file, input_file -> lines[process][1], input_file -> lines[process][2], input_file -> lines[process], false, process);
       break;
 
     case 'R':

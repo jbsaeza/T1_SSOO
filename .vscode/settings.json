@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "manager.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "errno.h": "c"
     }
 }
