@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 
     case 'R':
       printf("Ejecutando Root\n");
-      run_manager(input_file, input_file -> lines[process][1], input_file -> lines[process][2], input_file -> lines[process], true);
+      run_manager(input_file, input_file -> lines[process][1], input_file -> lines[process][2], input_file -> lines[process], true, process);
       break;
   }
   return 0;  

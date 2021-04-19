@@ -18,13 +18,13 @@ int size;
 int manager_number;
 void generate_output()
 {
-  File* child_file;
+  FILE* child_file;
   size_t len;
   ssize_t read;
   char* line;
   char* buffer = malloc(100*sizeof(char));
   sprintf(buffer,"./i.txt",manager_number);
-  File* file = fopen(buffer,"w");
+  FILE* file = fopen(buffer,"w");
   for (int i = 0; i < size; i++)
   {
     line = NULL;
