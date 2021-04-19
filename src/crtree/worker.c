@@ -1,28 +1,81 @@
-/* 
-El proceso worker recibe un ejecutable, el numero de argumentos y luego los argumentos
 
-Ejecuta el programa que recibe como input y lo espera, luego retorna estadisticas en un archivo
-Debe interceptar señales sigint y sigabort (la primera se ignora y la segunda es de interrupcion,
-indica que el proceso padre debe escribir las estadisticas antes de que el hijo termine)
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include<signal.h>
+#include <time.h>
+#include <string.h>
+#include "worker.h"
 
+clock_t tiempo_inicio, tiempo_final;
+int interrumped, status, process_number,n;
+pid_t child_pid;
+FILE* file;
+char* buffer;
+char** args;
+char dest[100] = "";
 
-*/
+void handle_sigint()
+{
+  signal(SIGINT, handle_sigint);
+}
 
-// void worker(char *file, int n, char *args[])
-// {
-//   if (fork() != 0)
-//   {
-//     waitpid(-1, &status, 0);
-//   } 
-//   else 
-//   {
-//     execve(file, parameters, 0);
-//   } 
-// }
+void handle_sigabort()
+{
+  signal(SIGABRT, handle_sigabort);
+  interrumped = 1;
+  kill(child_pid, SIGABRT);
+}
 
-// int getSize (char** s) {
-//     char** t;    
-//     for (t = s; *t != '\0'; t++)
-//         ;
-//     return t - s;
-// }
+void output_format(char* dest, int n, char** args){
+	for (int i = 0; i < n + 1; i++)
+	{
+		strcat(dest, args[i]);
+		if (i < n)
+		{
+		    strcat(dest, ",");
+		}
+	}
+}
+
+void final_output_format()
+{
+  output_format(dest, n, args);
+  sprintf(buffer,"./%i.txt",process_number);
+  file = fopen(buffer,"w");
+  sprintf(buffer, "%s,%f,%i,%i\n",dest,(double)(tiempo_final - tiempo_inicio)/CLOCKS_PER_SEC,status, interrumped);
+  fputs(buffer,file);
+  fclose(file);
+}
+
+void worker(char** process, int number)
+{
+  process_number = number;
+  interrumped = 0;
+  buffer = malloc(100*sizeof(char));
+  n = atoi(process[2]);
+  args = malloc( (n + 2) * sizeof(char*)); /* Se pide memoria para la cantida de procesos mas el archivo  y el puntero final null*/
+  args[0] = process[1];
+  for (int i = 0; i < n; i++)
+  {
+    args[ i + 1] = process[3 + i];
+  }
+  args[ n + 1] = NULL;
+  tiempo_inicio = clock();
+  if ((child_pid = fork()) != 0)
+  {
+    signal(SIGINT,handle_sigint);
+    signal(SIGABRT, handle_sigabort);
+    waitpid(child_pid,&status,0);
+    tiempo_final = clock();
+    final_output_format();
+    free(buffer);
+    free(args);
+  } 
+  else 
+  {
+    execve(args[0], args, 0);
+  }
+}
