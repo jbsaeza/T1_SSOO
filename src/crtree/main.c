@@ -28,5 +28,6 @@ int main(int argc, char **argv)
       run_manager(input_file, input_file -> lines[process][1], input_file -> lines[process][2], input_file -> lines[process], true, process);
       break;
   }
+  input_file_destroy(input_file);
   return 0;  
 }
