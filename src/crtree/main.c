@@ -14,17 +14,14 @@ int main(int argc, char **argv)
   switch (*input_file -> lines[process][0])
   {
     case 'W':
-      printf("Ejecutando Worker: %s\n", input_file -> lines[process][1]);
       worker(input_file -> lines[process], process);
       break;
 
     case 'M':
-      printf("Ejecutando Manager\n");
       run_manager(input_file, input_file -> lines[process][1], input_file -> lines[process][2], input_file -> lines[process], false, process);
       break;
 
     case 'R':
-      printf("Ejecutando Root\n");
       run_manager(input_file, input_file -> lines[process][1], input_file -> lines[process][2], input_file -> lines[process], true, process);
       break;
   }

@@ -16,6 +16,7 @@ pid_t *children;
 int *children_index;
 int size;
 int manager_number;
+int init = 0;
 
 void free_worker(){
     free(children);
@@ -81,8 +82,6 @@ void run_manager(InputFile* input_file, char* time_out, char* n_lines, char** li
     time_t start = time(NULL);
     pid_t child = 1;
     size = atoi(n_lines);
-    children = malloc(size * sizeof(pid_t));
-    children_index = malloc(size * sizeof(int));
     manager_number = index;
 
     for (int i = 0; i < atoi(n_lines) && child != 0; i++)
@@ -90,12 +89,16 @@ void run_manager(InputFile* input_file, char* time_out, char* n_lines, char** li
         child = fork();
         if (child != 0)
         {
-            printf("-----M: %d\n", getpid());
+            if (init == 0)
+            {
+                children = malloc(size * sizeof(pid_t));
+                children_index = malloc(size * sizeof(int));
+                init = 1;
+            }
             children[i] = child;
             children_index[i] = atoi(line[i+3]);
         }
         else{
-            printf("-----%s: %d\n", input_file -> lines[atoi(line[i+3])][0], getpid());
             const int w = atoi(line[i+3]);
             if(*input_file -> lines[w][0] == 'W'){
                 worker(input_file -> lines[w], w);
@@ -104,7 +107,6 @@ void run_manager(InputFile* input_file, char* time_out, char* n_lines, char** li
             }
             else{
                 run_manager(input_file, input_file -> lines[w][1], input_file -> lines[w][2], input_file -> lines[w], false, w);
-                // free_manager();
                 return;
             }
         }

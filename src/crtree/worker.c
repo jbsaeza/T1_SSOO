@@ -102,6 +102,8 @@ void worker(char** process, int number)
   else 
   {
     execve(args[0], args, 0);
-    exit(0);
+    free(buffer);
+    free(args);
+    return;
   }
 }
