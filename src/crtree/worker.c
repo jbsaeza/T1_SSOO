@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "worker.h"
 
@@ -16,6 +17,22 @@ FILE* file;
 char* buffer;
 char** args;
 char* dest;
+
+char* stringRemoveNonAlphaNum(char* str)
+{
+  unsigned long i = 0;
+  unsigned long j = 0;
+  char c;
+  while ((c = str[i++]) != '\0')
+  {
+      if (isalnum(c))
+      {
+          str[j++] = c;
+      }
+  }
+  str[j] = '\0';
+  return str;
+}
 
 void handle_sigabort()
 {
@@ -33,23 +50,14 @@ void output_format(){
   strcpy(dest, "");
 	for (int i = 0; i <= n; i++)
 	{
-    if (i == n)
+    if (i == 0)
     {
-      // args[i][strcspn(args[i], "\n")] = 0;
-      // strtok(args[i], "\n");
-      // char *n = malloc( strlen( args[i] ? args[i] : "\n" ) );
-      // if( args[i] )
-      //     strcpy( n, args[i] );
-      // n[strlen(n)-1]='\0';
-      // strcat(dest, n);
-      // strcat(dest, ",");
-      // free(n);
-      args[i][strcspn(args[i], "\n")] = 0;
       strcat(dest, args[i]);
       strcat(dest, ",");
     }
-    else{
-      strcat(dest, args[i]);
+    else
+    {
+      strcat(dest, stringRemoveNonAlphaNum(args[i]));
       strcat(dest, ",");
     }
 	}

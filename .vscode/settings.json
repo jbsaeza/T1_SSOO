@@ -3,6 +3,7 @@
         "manager.h": "c",
         "stdbool.h": "c",
         "errno.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "signal.h": "c"
     }
 }

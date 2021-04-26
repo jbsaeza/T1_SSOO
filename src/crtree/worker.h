@@ -5,3 +5,4 @@ void handle_sigint();
 void worker(char** process, int number);
 void final_output_format();
 void output_format();
+char* stringRemoveNonAlphaNum(char* str);
